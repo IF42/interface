@@ -1,0 +1,3 @@
+.cache/test.o: test/test.c test/vector_test.h
+.cache/vector_test.o: test/vector_test.c test/vector_test.h \
+ test/../src/interface/vector.h

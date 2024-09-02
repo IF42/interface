@@ -20,35 +20,31 @@ CACHE=.cache
 OUTPUT=$(CACHE)/release
 
 TEST += test.o
+TEST += vector_test.o
 
 
-OBJ=$(addprefix $(CACHE)/,$(MODULES))
 T_OBJ=$(addprefix $(CACHE)/,$(TEST))
 
 
-all:
+exec: env $(T_OBJ)
+	$(CC) $(T_OBJ) $(OBJ) $(LIBS) -o $(OUTPUT)/test
+	$(OUTPUT)/test
 
-#all: env $(OBJ)
-#	ar -crs $(OUTPUT)/$(TARGET) $(OBJ)
 
 
 %.o:
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
-#-include dep.list
+-include dep.list
 
-
-exec: $(T_OBJ)
-	$(CC) $(T_OBJ) $(OBJ) $(LIBS) -o $(OUTPUT)/test
-	$(OUTPUT)/test
 
 
 .PHONY: env dep clean
 
 
-#dep:
-#	$(CC) -MM test/*.c src/*.c | sed 's|[a-zA-Z0-9_-]*\.o|$(CACHE)/&|' > dep.list
+dep:
+	$(CC) -MM test/*.c | sed 's|[a-zA-Z0-9_-]*\.o|$(CACHE)/&|' > dep.list
 
 
 env:
@@ -56,8 +52,7 @@ env:
 	mkdir -pv $(OUTPUT)
 
 install:
-#cp -v $(OUTPUT)/$(TARGET) $(LIB_PATH)/$(TARGET)
-	cp -vr src/vector $(INCLUDE_PATH)
+	cp -vr src/interface $(INCLUDE_PATH)
 
 clean: 
 	rm -rvf $(OUTPUT)
